@@ -18,9 +18,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Giải nén vibebox.zip
+        run: unzip -q vibebox.zip -d _src
       - name: Kiểm tra cú pháp JS
+        working-directory: _src/vibebox
         run: for f in js/*.js; do node --check "$f"; done
       - name: Chạy test engine và preset
+        working-directory: _src/vibebox
         run: node tests/engine.test.js
 
   deploy:
@@ -32,10 +36,12 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Gom file web
+      - name: Giải nén và gom file web
         run: |
+          unzip -q vibebox.zip -d _src
           mkdir _site
-          cp -r index.html css js _site/
+          cd _src/vibebox
+          cp -r index.html css js ../../_site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
