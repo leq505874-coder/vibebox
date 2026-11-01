@@ -22,7 +22,7 @@ jobs:
         run: unzip -q vibebox.zip -d _src
       - name: Kiểm tra cú pháp JS
         working-directory: _src/vibebox
-        run: for f in js/*.js; do node --check "$f"; done
+        run: for f in js/*.js sw.js; do node --check "$f"; done
       - name: Chạy test engine và preset
         working-directory: _src/vibebox
         run: node tests/engine.test.js
@@ -41,7 +41,7 @@ jobs:
           unzip -q vibebox.zip -d _src
           mkdir _site
           cd _src/vibebox
-          cp -r index.html css js ../../_site/
+          cp -r index.html manifest.webmanifest sw.js css js icons ../../_site/
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
