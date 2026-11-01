@@ -1,4 +1,4 @@
-iiname: CI & Pages
+name: CI & Pages
 
 on:
   push:
@@ -25,7 +25,9 @@ jobs:
         run: for f in js/*.js sw.js; do node --check "$f"; done
       - name: Chạy test engine và preset
         working-directory: _src/vibebox
-        run: node tests/engine.test.js
+        run: |
+          node tests/engine.test.js
+          node tests/media-controls.test.js
 
   deploy:
     if: github.ref == 'refs/heads/main'
@@ -38,8 +40,6 @@ jobs:
       - uses: actions/checkout@v4
       - name: Giải nén và gom file web
         run: |
-       node tests/engine.test.js
-       node tests/media-controls.test.js
           unzip -q vibebox.zip -d _src
           mkdir _site
           cd _src/vibebox
